@@ -10,6 +10,7 @@ cap = cv2.VideoCapture(0)
 # Initialize Mediapipe hands
 with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
     while True:
+        
         # Read frame from camera
         ret, frame = cap.read()
 
@@ -36,7 +37,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
                 
                 # Display hand label
                 h, w, _ = image.shape
-                cx = int(hand_landmarks.landmark[9].x * w)  # Center of hand
+                cx = int(hand_landmarks.landmark[9].x * w)  
                 cy = int(hand_landmarks.landmark[9].y * h)
                 cv2.putText(image, hand_label, (cx-30, cy-30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)     
         
@@ -69,10 +70,13 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
                 finger_count += finger_states.count(True)
 
         # Display finger count on image
-        cv2.putText(image, str(finger_count), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        if finger_count == 5:
+            cv2.putText(image, f'UCL TETANGGA: {finger_count}', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 250, 255), 2)
+        else:
+            cv2.putText(image, f'Jari: {finger_count}', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 250, 255), 2)
 
         # Display image
-        cv2.imshow('Finger Counter', image)
+        cv2.imshow('Itung Jari', image)
 
         # Check for 'q' key to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
